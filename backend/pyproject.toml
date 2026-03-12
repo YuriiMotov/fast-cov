@@ -1,0 +1,17 @@
+[project]
+name = "fast-cov-server"
+version = "0.1.0"
+description = ""
+requires-python = ">=3.13"
+dependencies = [
+    "aiobotocore>=3.2.1",
+    "fastapi[standard]>=0.135.1",
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.13.1",
+    "redis[hiredis]>=7.3.0",
+    "stamina>=24.3.0",
+    "types-aiobotocore[s3]>=3.2.1",
+]
+
+[tool.fastapi]
+entrypoint = "main:app"

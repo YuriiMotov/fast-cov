@@ -1,0 +1,126 @@
+import json
+from dataclasses import dataclass
+from uuid import uuid4
+from contextlib import AsyncExitStack
+
+from botocore.exceptions import ClientError
+from pydantic import SecretStr
+from aiobotocore.session import get_session
+from types_aiobotocore_s3 import S3Client as AIOS3Client
+
+
+class AWSStorageError(Exception):
+    pass
+
+
+@dataclass
+class UploadSession:
+    site_id: str
+    bucket: str
+    region: str
+    access_key_id: str
+    secret_access_key: str
+    session_token: str
+
+
+class AWSStorage:
+    def __init__(
+        self,
+        access_key_id: str,
+        secret_access_key: SecretStr,
+        bucket: str,
+        region: str,
+        upload_role_arn: str,
+    ):
+        self._session = get_session()
+        self._access_key_id = access_key_id
+        self._secret_access_key = secret_access_key
+        self._bucket = bucket
+        self._region = region
+        self._upload_role_arn = upload_role_arn
+        self._exit_stack = AsyncExitStack()
+        self._client: AIOS3Client | None = None
+
+    async def __aenter__(self):
+        if self._client is not None:
+            raise AWSStorageError("Client already initialized")
+
+        client = self._session.create_client(
+            "s3",
+            aws_access_key_id=self._access_key_id,
+            aws_secret_access_key=self._secret_access_key.get_secret_value(),
+            region_name=self._region,
+        )
+        self._client = await self._exit_stack.enter_async_context(client)
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self._exit_stack.aclose()
+        self._client = None
+
+    async def _generate_site_id(self) -> str:
+        if self._client is None:
+            raise AWSStorageError("Client not initialized")
+        for _ in range(3):
+            site_id = uuid4().hex[:12]
+            full_key = f"sites/{site_id}/.keep"
+            try:
+                await self._client.put_object(
+                    Bucket=self._bucket,
+                    Key=full_key,
+                    Body=b"",
+                    IfNoneMatch="*",
+                )
+                return site_id
+            except ClientError as e:
+                if e.response.get("Error", {}).get("Code") == "PreconditionFailed":
+                    continue
+                raise AWSStorageError(f"Failed to create site directory: {e}")
+        raise AWSStorageError("Failed to generate unique site ID after multiple attempts")
+
+    async def create_upload_session(self) -> UploadSession:
+        site_id = await self._generate_site_id()
+
+        session_policy = json.dumps({
+            "Version": "2012-10-17",
+            "Statement": [{
+                "Effect": "Allow",
+                "Action": "s3:PutObject",
+                "Resource": f"arn:aws:s3:::{self._bucket}/sites/{site_id}/*",
+            }],
+        })
+
+        async with self._session.create_client(
+            "sts",
+            aws_access_key_id=self._access_key_id,
+            aws_secret_access_key=self._secret_access_key.get_secret_value(),
+            region_name=self._region,
+        ) as sts_client:
+            response = await sts_client.assume_role(
+                RoleArn=self._upload_role_arn,
+                RoleSessionName=f"upload-{site_id}",
+                DurationSeconds=3600,
+                Policy=session_policy,
+            )
+
+        credentials = response["Credentials"]
+        return UploadSession(
+            site_id=site_id,
+            bucket=self._bucket,
+            region=self._region,
+            access_key_id=credentials["AccessKeyId"],
+            secret_access_key=credentials["SecretAccessKey"],
+            session_token=credentials["SessionToken"],
+        )
+
+    async def get_file(self, site_id: str, key: str) -> bytes:
+        if self._client is None:
+            raise AWSStorageError("Client not initialized")
+        full_key = f"sites/{site_id}/{key}"
+        try:
+            res = await self._client.get_object(Bucket=self._bucket, Key=full_key)
+            return await res["Body"].read()
+        except ClientError as e:
+            if e.response.get("Error", {}).get("Code") == "NoSuchKey":
+                raise AWSStorageError(f"File not found: {full_key}")
+            raise AWSStorageError(f"Failed to get file: {e}")  # pragma: no cover
