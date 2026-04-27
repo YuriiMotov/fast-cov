@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from redis.asyncio import Redis
 
-from config import get_settings
-from utils.github_client import GithubClient
-from utils.aws_storage import AWSStorage
-from routers.coverage import router as cov_upload_router
-from routers.badge import router as badge_router
+from app.config import get_settings
+from app.utils.github_client import GithubClient
+from app.utils.aws_storage import AWSStorage
+from app.routers.coverage import router as cov_upload_router
+from app.routers.badge import router as badge_router
 
 
 async def lifespan(_: FastAPI):

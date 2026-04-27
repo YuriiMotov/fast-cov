@@ -6,11 +6,11 @@ from fastapi.responses import RedirectResponse
 from redis import RedisError
 from redis.asyncio import Redis
 
-from constants import BADGE_CACHE_KEY
-from dependencies.gh_client import get_github_client
-from utils.github_client import GithubClient
-from schemas import GhCommitStatus
-from dependencies.redis_client import get_redis_client
+from app.constants import BADGE_CACHE_KEY
+from app.dependencies.gh_client import get_github_client
+from app.utils.github_client import GithubClient
+from app.schemas import GhCommitStatus
+from app.dependencies.redis_client import get_redis_client
 
 COV_RE = re.compile(r"([\d.]+)%")
 

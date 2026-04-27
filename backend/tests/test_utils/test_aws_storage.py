@@ -1,7 +1,7 @@
 from pydantic import SecretStr
 import pytest
 
-from backend.utils.aws_storage import AWSStorage, AWSStorageError
+from app.utils.aws_storage import AWSStorage, AWSStorageError
 
 
 @pytest.mark.asyncio

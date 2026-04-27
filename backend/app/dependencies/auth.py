@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
 
-from config import get_settings
+from app.config import get_settings
 
 api_key_header = APIKeyHeader(name="token")
 

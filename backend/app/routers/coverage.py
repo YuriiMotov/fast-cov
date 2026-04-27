@@ -8,13 +8,13 @@ from fastapi.responses import Response
 from redis import RedisError
 from redis.asyncio import Redis
 
-from dependencies.redis_client import get_redis_client
-from dependencies.auth import verify_api_key
+from app.dependencies.redis_client import get_redis_client
+from app.dependencies.auth import verify_api_key
 
-from utils.aws_storage import AWSStorage, AWSStorageError
-from dependencies.aws_storage import get_aws_storage
-from constants import BADGE_CACHE_KEY
-from schemas import AWSUploadSessionResponse
+from app.utils.aws_storage import AWSStorage, AWSStorageError
+from app.dependencies.aws_storage import get_aws_storage
+from app.constants import BADGE_CACHE_KEY
+from app.schemas import AWSUploadSessionResponse
 
 SAFE_PATH_RE = re.compile(r"^(?!.*(?:^|/)\.\.(?:/|$)).*$")
 

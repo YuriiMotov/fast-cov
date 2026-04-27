@@ -4,7 +4,7 @@ import httpx
 import stamina
 from pydantic import SecretStr
 
-from schemas import GhCommit, GhCommitStatus
+from app.schemas import GhCommit, GhCommitStatus
 
 BASE_URL = "https://api.github.com"
 

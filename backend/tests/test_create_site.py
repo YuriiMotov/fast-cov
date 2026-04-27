@@ -4,7 +4,7 @@ import pytest
 from botocore.exceptions import ClientError
 from fastapi.testclient import TestClient
 
-from backend.utils.aws_storage import AWSStorageError
+from app.utils.aws_storage import AWSStorageError
 
 STS_CREDENTIALS = {
     "AccessKeyId": "ASIAIOSFODNN7EXAMPLE",

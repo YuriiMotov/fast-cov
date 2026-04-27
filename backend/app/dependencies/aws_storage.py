@@ -2,7 +2,7 @@ from typing import cast
 
 from fastapi import Request
 
-from utils.aws_storage import AWSStorage
+from app.utils.aws_storage import AWSStorage
 
 
 async def get_aws_storage(request: Request) -> AWSStorage:

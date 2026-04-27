@@ -7,9 +7,9 @@ import pytest
 from fastapi.testclient import TestClient
 import stamina
 
-from backend.config import get_settings
-from backend.dependencies.redis_client import get_redis_client
-from backend.main import app
+from app.config import get_settings
+from app.dependencies.redis_client import get_redis_client
+from app.main import app
 
 TEST_API_KEY = "test-api-key"
 

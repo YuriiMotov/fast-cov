@@ -1,7 +1,7 @@
 from pydantic import SecretStr
 import pytest
 
-from backend.utils.github_client import GithubClient, GithubClientError
+from app.utils.github_client import GithubClient, GithubClientError
 
 
 @pytest.mark.asyncio
