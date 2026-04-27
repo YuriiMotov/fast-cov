@@ -239,6 +239,9 @@ def upload(
     ] = False,
 ) -> None:
     """Upload a directory to a temporary site."""
+
+    assert not api_url.endswith("/"), "API URL must not end with a slash"
+
     if not directory.is_dir():
         typer.echo(f"Error: {directory} is not a directory", err=True)
         raise typer.Exit(1)
