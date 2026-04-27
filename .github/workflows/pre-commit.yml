@@ -6,7 +6,7 @@ on:
       - opened
       - synchronize
 
-permissions: {}  
+permissions: {}
 
 env:
   # Forks and Dependabot don't have access to secrets
