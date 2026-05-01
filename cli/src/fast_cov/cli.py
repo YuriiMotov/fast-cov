@@ -8,9 +8,6 @@ import httpx
 import stamina
 import typer
 from aiobotocore.session import get_session
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = typer.Typer()
 
