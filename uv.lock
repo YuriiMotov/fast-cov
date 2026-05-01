@@ -333,7 +333,6 @@ source = { editable = "cli" }
 dependencies = [
     { name = "aiobotocore" },
     { name = "httpx" },
-    { name = "python-dotenv" },
     { name = "stamina" },
     { name = "typer" },
 ]
@@ -342,7 +341,6 @@ dependencies = [
 requires-dist = [
     { name = "aiobotocore", specifier = ">=3.2.1" },
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "python-dotenv", specifier = ">=1.1.0" },
     { name = "stamina", specifier = ">=24.3.0" },
     { name = "typer", specifier = ">=0.15.0" },
 ]
