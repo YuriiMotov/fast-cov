@@ -202,7 +202,12 @@ async def _main(
 @app.command()
 def upload(
     *,
-    directory: Annotated[Path, typer.Argument(help="Directory to upload")],
+    directory: Annotated[
+        Path,
+        typer.Argument(
+            help="Directory to upload", dir_okay=True, file_okay=False, exists=True
+        ),
+    ],
     api_url: Annotated[
         str, typer.Option(envvar="FAST_COV_API_URL", help="Backend API base URL")
     ],
@@ -242,11 +247,8 @@ def upload(
 ) -> None:
     """Upload a directory to a temporary site."""
 
-    assert not api_url.endswith("/"), "API URL must not end with a slash"
-
-    if not directory.is_dir():
-        typer.echo(f"Error: {directory} is not a directory", err=True)
-        raise typer.Exit(1)
+    if api_url.endswith("/"):
+        raise typer.BadParameter("must not end with a slash", param_hint="--api-url")
 
     asyncio.run(
         _main(
