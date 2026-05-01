@@ -1,3 +1,6 @@
+[tool.uv]
+exclude-newer = "1 week"
+
 [tool.uv.workspace]
 members = ["cli", "backend"]
 
