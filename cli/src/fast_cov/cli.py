@@ -43,7 +43,9 @@ async def _request(
 ) -> httpx.Response:
     async with httpx.AsyncClient(timeout=timeout) as client:
         async for attempt in stamina.retry_context(
-            on=(httpx.TransportError, httpx.HTTPStatusError), attempts=3, wait_jitter=2.0,
+            on=(httpx.TransportError, httpx.HTTPStatusError),
+            attempts=3,
+            wait_jitter=2.0,
         ):
             with attempt:
                 resp = await client.request(method, url, headers=headers, json=json)
@@ -98,7 +100,8 @@ async def _main(
 ) -> None:
     start_time = datetime.now()
     typer.echo("Creating upload session...")
-    resp = await _request("POST",
+    resp = await _request(
+        "POST",
         f"{api_url}/coverage/create-site/",
         headers={"token": api_key},
         timeout=120,
@@ -130,7 +133,8 @@ async def _main(
         "target_url": f"{api_url}/coverage/{session['site_id']}/",
         "context": "fast-coverage",
     }
-    status_resp = await _request("POST",
+    status_resp = await _request(
+        "POST",
         status_url,
         headers={
             "Authorization": f"Bearer {gh_token}",
@@ -151,7 +155,8 @@ async def _main(
         return
 
     # Clear badge cache
-    resp = await _request("POST",
+    resp = await _request(
+        "POST",
         f"{api_url}/coverage/invalidate-cache/{repo_owner}/{repo_name}/",
         headers={"token": api_key},
     )
