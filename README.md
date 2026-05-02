@@ -1,6 +1,6 @@
 <p align="center">
 
-<img src="docs/img/logo.png" alt="covered" width="200"><br />
+<img src="docs/img/covered.png" alt="covered" width="200"><br />
 
 Make it green.
 
