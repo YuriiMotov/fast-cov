@@ -131,7 +131,7 @@ async def _main(
         "state": status_state,
         "description": f"Coverage {coverage_val}%",
         "target_url": f"{api_url}/coverage/{session['site_id']}/",
-        "context": "covered",
+        "context": "coverage",
     }
     status_resp = await _request(
         "POST",
