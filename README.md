@@ -1,5 +1,13 @@
 <p align="center">
 
+<img src="docs/img/logo.png" alt="covered" width="200"><br />
+
+Make it green.
+
+</p>
+
+<p align="center">
+
 <a href="https://github.com/YuriiMotov/covered/actions?query=workflow%3ATest-backend+event%3Apush+branch%3Amaster">
     <img src="https://github.com/YuriiMotov/covered/actions/workflows/test-backend.yml/badge.svg?event=push&branch=master" alt="Test backend">
 </a>

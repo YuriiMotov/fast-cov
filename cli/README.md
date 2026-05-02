@@ -1,3 +1,11 @@
+<p align="center">
+
+<img src="https://raw.githubusercontent.com/YuriiMotov/covered/master/docs/img/logo.png" alt="covered" width="200"><br />
+
+Make it green.
+
+</p>
+
 # covered
 
 CLI for uploading HTML coverage reports to a self-hosted [covered](https://github.com/YuriiMotov/covered) backend, then setting a GitHub commit status with the coverage value.
