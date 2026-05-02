@@ -6,6 +6,10 @@ resolution-markers = [
     "python_full_version < '3.14'",
 ]
 
+[options]
+exclude-newer = "2026-04-25T07:43:08.019769415Z"
+exclude-newer-span = "P1W"
+
 [manifest]
 members = [
     "covered",
