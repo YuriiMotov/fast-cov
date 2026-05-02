@@ -31,7 +31,7 @@ async def lifespan(_: FastAPI):
     await redis_connection.aclose()
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, openapi_url=None)
 
 
 app.include_router(cov_upload_router, prefix="/coverage")
