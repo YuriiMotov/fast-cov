@@ -8,9 +8,6 @@ import httpx
 import stamina
 import typer
 from aiobotocore.session import get_session
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = typer.Typer()
 
@@ -46,7 +43,9 @@ async def _request(
 ) -> httpx.Response:
     async with httpx.AsyncClient(timeout=timeout) as client:
         async for attempt in stamina.retry_context(
-            on=(httpx.TransportError, httpx.HTTPStatusError), attempts=3, wait_jitter=2.0,
+            on=(httpx.TransportError, httpx.HTTPStatusError),
+            attempts=3,
+            wait_jitter=2.0,
         ):
             with attempt:
                 resp = await client.request(method, url, headers=headers, json=json)
@@ -101,7 +100,8 @@ async def _main(
 ) -> None:
     start_time = datetime.now()
     typer.echo("Creating upload session...")
-    resp = await _request("POST",
+    resp = await _request(
+        "POST",
         f"{api_url}/coverage/create-site/",
         headers={"token": api_key},
         timeout=120,
@@ -131,9 +131,10 @@ async def _main(
         "state": status_state,
         "description": f"Coverage {coverage_val}%",
         "target_url": f"{api_url}/coverage/{session['site_id']}/",
-        "context": "fast-coverage",
+        "context": "covered",
     }
-    status_resp = await _request("POST",
+    status_resp = await _request(
+        "POST",
         status_url,
         headers={
             "Authorization": f"Bearer {gh_token}",
@@ -154,7 +155,8 @@ async def _main(
         return
 
     # Clear badge cache
-    resp = await _request("POST",
+    resp = await _request(
+        "POST",
         f"{api_url}/coverage/invalidate-cache/{repo_owner}/{repo_name}/",
         headers={"token": api_key},
     )
@@ -200,51 +202,53 @@ async def _main(
 @app.command()
 def upload(
     *,
-    directory: Annotated[Path, typer.Argument(help="Directory to upload")],
+    directory: Annotated[
+        Path,
+        typer.Argument(
+            help="Directory to upload", dir_okay=True, file_okay=False, exists=True
+        ),
+    ],
     api_url: Annotated[
-        str, typer.Option(envvar="FAST_COV_API_URL", help="Backend API base URL")
+        str, typer.Option(envvar="COVERED_API_URL", help="Backend API base URL")
     ],
     api_key: Annotated[
-        str, typer.Option(envvar="FAST_COV_API_KEY", help="API key for authentication")
+        str, typer.Option(envvar="COVERED_API_KEY", help="API key for authentication")
     ],
     concurrency: Annotated[int, typer.Option(help="Max concurrent uploads")] = 50,
     repo_owner: Annotated[
-        str, typer.Option(envvar="FAST_COV_REPO_OWNER", help="GitHub repository owner")
+        str, typer.Option(envvar="COVERED_REPO_OWNER", help="GitHub repository owner")
     ],
     repo_name: Annotated[
-        str, typer.Option(envvar="FAST_COV_REPO_NAME", help="GitHub repository name")
+        str, typer.Option(envvar="COVERED_REPO_NAME", help="GitHub repository name")
     ],
     commit_sha: Annotated[
-        str, typer.Option(envvar="FAST_COV_COMMIT_SHA", help="Git commit SHA")
+        str, typer.Option(envvar="COVERED_COMMIT_SHA", help="Git commit SHA")
     ],
     coverage_threshold: Annotated[
         float,
         typer.Option(
-            envvar="FAST_COV_COVERAGE_THRESHOLD",
+            envvar="COVERED_COVERAGE_THRESHOLD",
             help="Minimum coverage percentage to set success status",
         ),
     ] = 100.0,
     gh_token: Annotated[
         str,
         typer.Option(
-            envvar="FAST_COV_GH_TOKEN", help="GitHub token for setting commit status"
+            envvar="COVERED_GH_TOKEN", help="GitHub token for setting commit status"
         ),
     ],
     is_default_branch: Annotated[
         bool,
         typer.Option(
-            envvar="FAST_COV_IS_DEFAULT_BRANCH",
+            envvar="COVERED_IS_DEFAULT_BRANCH",
             help="Whether this is the default branch (enables cache invalidation)",
         ),
     ] = False,
 ) -> None:
     """Upload a directory to a temporary site."""
 
-    assert not api_url.endswith("/"), "API URL must not end with a slash"
-
-    if not directory.is_dir():
-        typer.echo(f"Error: {directory} is not a directory", err=True)
-        raise typer.Exit(1)
+    if api_url.endswith("/"):
+        raise typer.BadParameter("must not end with a slash", param_hint="--api-url")
 
     asyncio.run(
         _main(

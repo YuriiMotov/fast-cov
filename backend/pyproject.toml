@@ -1,7 +1,9 @@
 [project]
-name = "fast-cov-server"
+name = "covered-server"
 version = "0.1.0"
 description = ""
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.13"
 dependencies = [
     "aiobotocore>=3.2.1",

@@ -1,16 +1,24 @@
 <p align="center">
 
-<a href="https://github.com/YuriiMotov/fast-cov/actions?query=workflow%3ATest-backend+event%3Apush+branch%3Amaster">
-    <img src="https://github.com/YuriiMotov/fast-cov/actions/workflows/test-backend.yml/badge.svg?event=push&branch=master" alt="Test backend">
+<img src="docs/img/logo.png" alt="covered" width="200"><br />
+
+Make it green.
+
+</p>
+
+<p align="center">
+
+<a href="https://github.com/YuriiMotov/covered/actions?query=workflow%3ATest-backend+event%3Apush+branch%3Amaster">
+    <img src="https://github.com/YuriiMotov/covered/actions/workflows/test-backend.yml/badge.svg?event=push&branch=master" alt="Test backend">
 </a>
 
-<a href="https://coverage-0cc8740f.fastapicloud.dev/badge/redirect/YuriiMotov/fast-cov/">
-    <img src="https://coverage-0cc8740f.fastapicloud.dev/badge/YuriiMotov/fast-cov.svg" alt="Coverage">
+<a href="https://coverage-0cc8740f.fastapicloud.dev/badge/redirect/YuriiMotov/covered/">
+    <img src="https://coverage-0cc8740f.fastapicloud.dev/badge/YuriiMotov/covered.svg" alt="Coverage">
 </a>
 
 </p>
 
-# fast-cov
+# covered
 
 Self-hosted coverage reports storage for GitHub repositories.
 

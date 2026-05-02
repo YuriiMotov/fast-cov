@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     aws_region: str = "us-east-1"
     aws_access_key_id: str
     aws_secret_access_key: SecretStr
-    aws_bucket: str = "fast-cov"
+    aws_bucket: str = "covered"
     aws_upload_role_arn: str
 
     redis_url: AnyUrl
