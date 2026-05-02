@@ -1,9 +1,6 @@
 <p align="center">
-
-<img src="https://raw.githubusercontent.com/YuriiMotov/covered/master/docs/img/logo.png" alt="covered" width="200"><br />
-
-Make it green.
-
+<img src="https://raw.githubusercontent.com/YuriiMotov/covered/master/docs/img/covered.png" alt="covered" width="200"><br />
+<b>Make it green.</b>
 </p>
 
 # covered
