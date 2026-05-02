@@ -1,7 +1,7 @@
 [project]
-name = "fast-cov"
+name = "covered"
 version = "0.1.0"
-description = "Upload coverage reports to fast-cov"
+description = "Upload coverage reports to 'covered'"
 readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
@@ -25,12 +25,12 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/YuriiMotov/fast-cov"
-Repository = "https://github.com/YuriiMotov/fast-cov"
-Issues = "https://github.com/YuriiMotov/fast-cov/issues"
+Homepage = "https://github.com/YuriiMotov/covered"
+Repository = "https://github.com/YuriiMotov/covered"
+Issues = "https://github.com/YuriiMotov/covered/issues"
 
 [project.scripts]
-fast-cov = "fast_cov.cli:app"
+covered = "covered.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.11.7,<0.12.0"]

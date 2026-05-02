@@ -131,7 +131,7 @@ async def _main(
         "state": status_state,
         "description": f"Coverage {coverage_val}%",
         "target_url": f"{api_url}/coverage/{session['site_id']}/",
-        "context": "fast-coverage",
+        "context": "covered",
     }
     status_resp = await _request(
         "POST",
@@ -209,38 +209,38 @@ def upload(
         ),
     ],
     api_url: Annotated[
-        str, typer.Option(envvar="FAST_COV_API_URL", help="Backend API base URL")
+        str, typer.Option(envvar="COVERED_API_URL", help="Backend API base URL")
     ],
     api_key: Annotated[
-        str, typer.Option(envvar="FAST_COV_API_KEY", help="API key for authentication")
+        str, typer.Option(envvar="COVERED_API_KEY", help="API key for authentication")
     ],
     concurrency: Annotated[int, typer.Option(help="Max concurrent uploads")] = 50,
     repo_owner: Annotated[
-        str, typer.Option(envvar="FAST_COV_REPO_OWNER", help="GitHub repository owner")
+        str, typer.Option(envvar="COVERED_REPO_OWNER", help="GitHub repository owner")
     ],
     repo_name: Annotated[
-        str, typer.Option(envvar="FAST_COV_REPO_NAME", help="GitHub repository name")
+        str, typer.Option(envvar="COVERED_REPO_NAME", help="GitHub repository name")
     ],
     commit_sha: Annotated[
-        str, typer.Option(envvar="FAST_COV_COMMIT_SHA", help="Git commit SHA")
+        str, typer.Option(envvar="COVERED_COMMIT_SHA", help="Git commit SHA")
     ],
     coverage_threshold: Annotated[
         float,
         typer.Option(
-            envvar="FAST_COV_COVERAGE_THRESHOLD",
+            envvar="COVERED_COVERAGE_THRESHOLD",
             help="Minimum coverage percentage to set success status",
         ),
     ] = 100.0,
     gh_token: Annotated[
         str,
         typer.Option(
-            envvar="FAST_COV_GH_TOKEN", help="GitHub token for setting commit status"
+            envvar="COVERED_GH_TOKEN", help="GitHub token for setting commit status"
         ),
     ],
     is_default_branch: Annotated[
         bool,
         typer.Option(
-            envvar="FAST_COV_IS_DEFAULT_BRANCH",
+            envvar="COVERED_IS_DEFAULT_BRANCH",
             help="Whether this is the default branch (enables cache invalidation)",
         ),
     ] = False,

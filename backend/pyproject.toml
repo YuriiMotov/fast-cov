@@ -1,5 +1,5 @@
 [project]
-name = "fast-cov-server"
+name = "covered-server"
 version = "0.1.0"
 description = ""
 license = "MIT"
