@@ -33,4 +33,4 @@ jobs:
       - name: Build Python distribution
         run: uv build --package covered
       - name: Publish Python package
-        run: uv publish --trusted-publishing always --publish-url https://test.pypi.org/legacy/
+        run: uv publish --trusted-publishing always
